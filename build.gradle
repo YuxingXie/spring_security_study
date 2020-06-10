@@ -1,0 +1,86 @@
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+
+static def getDateTime() {
+    DateFormat df = new SimpleDateFormat("yyyyMMddHHmm");
+
+    return df.format(new Date());
+}
+
+group 'com.lingyun.projects'
+version '1.0-SNAPSHOT'
+
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.16.RELEASE")
+    }
+}
+
+allprojects {
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+        }
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+jar {
+    baseName = 'wx12345'
+    version = getDateTime()
+}
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+//   compile fileTree(include: ['*.jar'], dir: 'libs')
+
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf'
+
+//    org.springframework.boot.autoconfigure.thymeleaf.ThymeleafAutoConfiguration依赖下面四个包
+    compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-conditionalcomments'
+    compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-java8time'
+//    compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity4'
+    compile group: 'com.github.mxab.thymeleaf.extras', name: 'thymeleaf-extras-data-attribute'
+
+
+//    compile group: 'com.google.code.gson', name: 'gson', version: '2.8.2'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.6'
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.3'
+
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
+    compile("org.springframework.boot:spring-boot-starter-actuator")
+    compile group: 'org.springframework.boot', name: 'spring-boot-devtools'
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
+    compile group: 'commons-logging', name: 'commons-logging', version: '1.1.1'
+    compile group: 'commons-httpclient', name: 'commons-httpclient', version: '3.1'
+    compile group: 'commons-codec', name: 'commons-codec', version: '1.4'
+
+
+    compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    compile group: 'com.h2database', name: 'h2', version: '1.4.196'
+
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+
+}
+bootRun {
+//开启页面热加载功能,bootRun必须在文件结尾
+    addResources = true
+}
+
+
