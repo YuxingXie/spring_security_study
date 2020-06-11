@@ -1,6 +1,7 @@
 package com.lingyun.study.springsecurity.domain.authority.entity;
 
 import com.lingyun.study.springsecurity.domain.user.entity.User;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -8,9 +9,19 @@ import javax.persistence.*;
 @Entity
 public class Authority implements GrantedAuthority {
     @Id
+    @GenericGenerator(name = "uuid",strategy = "uuid2")
+    @GeneratedValue(generator = "uuid")
     private String id;
     @Column
     private String name;
+
+    public Authority() {
+    }
+
+    public Authority(String name) {
+        this.name = name;
+    }
+
 
     @ManyToOne
     @JoinColumn(name = "userId")

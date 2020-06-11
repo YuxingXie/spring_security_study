@@ -24,12 +24,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.authorizeRequests()
-                .anyRequest().authenticated()
-                .and()
-                .formLogin()
-                .and()
-                .httpBasic();
+        httpSecurity
+                .authorizeRequests()
+                .anyRequest()
+                .authenticated()
+                .and().formLogin()
+                .and().httpBasic();
 
     }
 
@@ -40,7 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
          * 用户信息存储在内存
          * @param auth
          * @throws Exception
-         */
+
         auth.inMemoryAuthentication()
                 //对应表单的username
                 .withUser("zhangsan")
@@ -53,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .password("123")
                 .roles("USER","ADMIN");
         System.out.println("configure once");
-
+         */
 
 
         auth.jdbcAuthentication().dataSource(dataSource).and()

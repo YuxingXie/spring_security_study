@@ -1,6 +1,8 @@
 package com.lingyun.study.springsecurity.common;
 
 
+import com.lingyun.study.springsecurity.domain.authority.entity.Authority;
+import com.lingyun.study.springsecurity.domain.authority.service.AuthorityService;
 import com.lingyun.study.springsecurity.domain.user.entity.User;
 import com.lingyun.study.springsecurity.domain.user.service.UserService;
 import org.slf4j.Logger;
@@ -13,6 +15,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @SpringBootApplication(scanBasePackages = {
@@ -34,11 +39,18 @@ public class Application implements ApplicationListener<ContextRefreshedEvent> {
         ApplicationContext ctx=contextRefreshedEvent.getApplicationContext();
 
         UserService userService = ctx.getBean("userService", UserService.class);
+        AuthorityService authorityService = ctx.getBean("authorityService", AuthorityService.class);
 
         if (userService.count()==0){
             User zhangsan=new User();
             zhangsan.setName("zhangsan");
             zhangsan.setPassword("123");
+            List<Authority> authorities = new ArrayList<>();
+            authorities.add(new Authority("ADMIN"));
+            authorities.add(new Authority("USER"));
+            authorities = authorityService.save(authorities);
+
+            zhangsan.setAuthorities(authorities);
             userService.save(zhangsan);
             User lisi=new User();
             zhangsan.setName("lisi");
