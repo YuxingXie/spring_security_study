@@ -1,6 +1,7 @@
 package com.lingyun.study.springsecurity.domain.user.entity;
 
 import com.lingyun.study.springsecurity.domain.authority.entity.Authority;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -9,6 +10,8 @@ import java.util.List;
 @Entity
 public class User implements UserDetails {
     @Id
+    @GenericGenerator(name = "uuid",strategy = "uuid2")
+    @GeneratedValue(generator = "uuid")
     private String id;
     @Column
     private String name;
